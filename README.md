@@ -1,4 +1,6 @@
 # automated-financial-pipeline
+![image](https://github.com/user-attachments/assets/fe375c8a-7752-4d0a-a6ab-9345dc65ff82)
+
 
 # Financial Data Pipeline with Apache Airflow
 
