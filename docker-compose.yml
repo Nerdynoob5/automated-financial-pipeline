@@ -1,0 +1,74 @@
+services:
+  airflow-webserver:
+    image: apache/airflow:2.7.2
+    container_name: airflow-webserver
+    command: ["airflow", "webserver"]
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
+      AIRFLOW__CELERY__RESULT_BACKEND: redis://redis:6379/0
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__WEB_SERVER__WEB_SERVER_HOST: 0.0.0.0
+      PYTHONPATH: /opt/airflow/dags/scripts  # Ensure PYTHONPATH includes the scripts directory
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags            # Mount the DAGs directory
+      - ./airflow/logs:/opt/airflow/logs            # Mount the logs directory
+      - ./airflow/plugins:/opt/airflow/plugins      # Mount the plugins directory
+      - ./airflow/scripts:/opt/airflow/scripts      # Mount the scripts directory
+      - ./airflow/data:/opt/airflow/data            # Mount the data directory
+    depends_on:
+      - airflow-scheduler
+      - postgres
+      - redis
+    networks:
+      - airflow_network
+
+  airflow-scheduler:
+    image: apache/airflow:2.7.2
+    container_name: airflow-scheduler
+    command: ["airflow", "scheduler"]
+    environment:
+      AIRFLOW__CORE__EXECUTOR: CeleryExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CELERY__BROKER_URL: redis://redis:6379/0
+      AIRFLOW__CELERY__RESULT_BACKEND: redis://redis:6379/0
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags            # Mount the DAGs directory
+      - ./airflow/logs:/opt/airflow/logs            # Mount the logs directory
+      - ./airflow/plugins:/opt/airflow/plugins      # Mount the plugins directory
+      - ./airflow/scripts:/opt/airflow/scripts      # Mount the scripts directory
+      - ./airflow/data:/opt/airflow/data            # Mount the data directory
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - airflow_network
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - airflow_network
+
+  redis:
+    image: redis:6
+    container_name: redis
+    networks:
+      - airflow_network
+
+volumes:
+  postgres_data:
+
+networks:
+  airflow_network:
+    driver: bridge
