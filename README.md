@@ -39,10 +39,9 @@ This project uses Docker Compose to simplify the setup. The `docker-compose.yml`
 ## Building and Starting Services
 To build and start the services, run:
 
-```bash
 docker-compose up --build
 
-## How to Run the Project
+##How to Run the Project
 After starting the Docker containers, access the Airflow web interface at `http://localhost:8080`.  
 Log in with the default credentials (username: `airflow`, password: `airflow`).  
 Trigger the DAG to start the data pipeline.
