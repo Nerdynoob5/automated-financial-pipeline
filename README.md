@@ -10,9 +10,7 @@ This project is an automated financial data pipeline that uses Apache Airflow to
 - [Getting Started](#getting-started)
 - [Docker Setup](#docker-setup)
 - [How to Run the Project](#how-to-run-the-project)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Features
 - Automated web scraping of financial news
@@ -35,26 +33,18 @@ This project is an automated financial data pipeline that uses Apache Airflow to
 - Docker and Docker Compose installed on your machine.
 - A valid Alpha Vantage API key (you can obtain one [here](https://www.alphavantage.co/support/#api-key)).
 
-Docker Setup
-This project uses Docker Compose to simplify the setup. The docker-compose.yml file defines the services required for the project.
+# Docker Setup
+This project uses Docker Compose to simplify the setup. The `docker-compose.yml` file defines the services required for the project.
 
-Building and Starting Services
+## Building and Starting Services
 To build and start the services, run:
 
-bash
-Copy code
+```bash
 docker-compose up --build
-How to Run the Project
-After starting the Docker containers, access the Airflow web interface at http://localhost:8080.
-Log in with the default credentials (username: airflow, password: airflow).
-Trigger the DAG to start the data pipeline.
-Usage
-The pipeline will scrape financial news and fetch stock data according to the defined schedule in the Airflow DAG.
-The results will be saved in the data directory in Excel format.
-Contributing
-Contributions are welcome! If you have suggestions for improvements or new features, feel free to create an issue or submit a pull request.
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## How to Run the Project
+After starting the Docker containers, access the Airflow web interface at `http://localhost:8080`.  
+Log in with the default credentials (username: `airflow`, password: `airflow`).  
+Trigger the DAG to start the data pipeline.
 
 
